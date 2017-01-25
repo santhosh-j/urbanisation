@@ -61,10 +61,9 @@ rd.on('close', function() {
   console.log(arr3.length);
   for (var i = 0; i < arr3.length; i++) {
       for (var j = 0; j < arr3.length-1; j++) {
-        // let tot = arr3[j].Urban + arr3[j].Rural;
-        // let tot1 = parseInt(arr3[j+1].Urban) + parseInt(arr3[j+1].Rural);
-          if(arr3[j].Total_Population < arr3[j+1].Total_Population){
-
+        let tot = arr3[j].Urban + arr3[j].Rural;
+        let tot1 = parseInt(arr3[j+1].Urban) + parseInt(arr3[j+1].Rural);
+          if(tot < tot1){
              let temp=arr3[j];
              arr3[j]=arr3[j+1];
              arr3[j+1]=temp;
@@ -78,3 +77,4 @@ rd.on('close', function() {
 });
 return "Converted successfully";
 }
+converter();
