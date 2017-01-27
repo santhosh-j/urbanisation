@@ -1,81 +1,86 @@
 const fs = require('fs');
 const rl = require('readline');
-function converter(countryArray){
-var rd = rl.createInterface({
-    input: fs.createReadStream('../csv/Indicators.csv'),
-    output: process.stdout,
-    terminal: false
-});
+function converter(startYear, endYear, countryArray) {
+    if(startYear === NaN || startYear === undefined || startYear === null) {
+        return 'Invalid Year';
+    }
+    if(endYear === NaN || endYear === undefined || endYear === null) {
+      return 'Invalid Year';
+    }
+    if(countryArray === null || countryArray === undefined || countryArray.length === 0) {
+      return 'Invalid Country';
+    }
+    let rd = rl.createInterface({
+        input: fs.createReadStream('../csv/Indicators.csv'),
+        output: process.stdout,
+        terminal: false
+    });
+    let arr1 = [];
+    let arr2 = [];
+    let arr3 = [];
+    let rural = 0;
+    let rural_Arr = [0, 0, 0, 0, 0];
+    let urban_Arr = [0, 0, 0, 0, 0];
+    rd.on('line', function(data) {
+        let linearr = data.split(',');
+        if(linearr[1] === 'IND' && (linearr[4] >= startYear && linearr[4] <= endYear) && linearr[3] === 'SP.RUR.TOTL.ZS')
+        {
+          rural = linearr[5];
+        }
+        if(linearr[1] === 'IND' && (linearr[4] >= startYear && linearr[4] <= endYear) && linearr[3] === 'SP.URB.TOTL.IN.ZS')
+        {
+          arr1.push({
+            'year': linearr[4],
+            'Rural population (% of total)': rural,
+            'Urban population (% of total)': linearr[5]});
+        }
+        if(linearr[1] === 'IND' && (linearr[4] >= startYear && linearr[4] <= endYear) && linearr[3] === 'SP.URB.GROW')
+        {
+          arr2.push({'year':linearr[4], 'Urban population growth (annual %)':linearr[5]});
+        }
 
+        for (let i = 0; i < countryArray.length; i = i + 1) {
+          if(linearr[0] === countryArray[i] && linearr[3] === 'SP.RUR.TOTL')
+          {
+            rural_Arr[i] = rural_Arr[i] + parseInt(linearr[5], 10);
+          }
+          if(linearr[0] === countryArray[i] && linearr[3] === 'SP.URB.TOTL')
+          {
+            urban_Arr[i] = urban_Arr[i] + parseInt(linearr[5], 10);
+          }
+        }
+    });
 
-arr = [];
-arr1 = [];
-arr2 = [];
-arr3 = [];
-var rural=0;
-rural_arr=[0,0,0,0,0];
-urban_arr=[0,0,0,0,0];
-country=['India', 'China', 'Pakistan', 'Sri Lanka', 'Bangladesh'];
-rd.on('line', function(data) {
-    let linearr=data.split(",");
-    if(linearr[1]=="IND" && linearr[3]=="SP.RUR.TOTL.ZS")
-      rural=linearr[5];
-    if(linearr[1]=="IND" && linearr[3]=="SP.URB.TOTL.IN.ZS")
-        arr1.push({'year':linearr[4],'Rural population (% of total)':rural,'Urban population (% of total)':linearr[5]});
-    if(linearr[1]=="IND" && linearr[3]=="SP.URB.GROW")
-        arr2.push({'year':linearr[4],'Urban population growth (annual %)':linearr[5]});
-
-    if(linearr[1]==="IND" && linearr[3]=="SP.RUR.TOTL")
-       rural_arr[0]=rural_arr[0] + parseInt(linearr[5]);
-    if(linearr[1]==="IND" && linearr[3]=="SP.URB.TOTL")
-        urban_arr[0]= urban_arr[0] + parseInt(linearr[5]);
-
-    if(linearr[1]=="CHN" && linearr[3]=="SP.RUR.TOTL")
-        rural_arr[1]=rural_arr[1] + parseInt(linearr[5]);
-    if(linearr[1]=="CHN" && linearr[3]=="SP.URB.TOTL")
-        urban_arr[1]= urban_arr[1] + parseInt(linearr[5]);
-
-    if(linearr[1]=="PAK" && linearr[3]=="SP.RUR.TOTL")
-        rural_arr[2]=rural_arr[2] + parseInt(linearr[5]);
-    if(linearr[1]=="PAK" && linearr[3]=="SP.URB.TOTL")
-        urban_arr[2]= urban_arr[2] + parseInt(linearr[5]);
-
-    if(linearr[1]=="LKA" && linearr[3]=="SP.RUR.TOTL")
-        rural_arr[3]= rural_arr[3] + parseInt(linearr[5]);
-    if(linearr[1]=="LKA" && linearr[3]=="SP.URB.TOTL")
-        urban_arr[3]= urban_arr[3] + parseInt(linearr[5]);
-
-    if(linearr[1]=="BGD" && linearr[3]=="SP.RUR.TOTL")
-        rural_arr[4]= rural_arr[4] + parseInt(linearr[5]);
-    if(linearr[1]=="BGD" && linearr[3]=="SP.URB.TOTL")
-        urban_arr[4]= urban_arr[4] + parseInt(linearr[5]);
-
-});
-
-rd.on('close', function() {
-  for(let i=0;i<country.length;i++){
-    //  let tot= parseInt(urban_arr[i]) + parseInt(rural_arr[i]);
-      arr3.push({'Country':country[i],'Urban':urban_arr[i],'Rural':rural_arr[i]});
-  }
-  console.log(arr3);
-  console.log(arr3.length);
-  for (var i = 0; i < arr3.length; i++) {
-      for (var j = 0; j < arr3.length-1; j++) {
-        let tot = arr3[j].Urban + arr3[j].Rural;
-        let tot1 = parseInt(arr3[j+1].Urban) + parseInt(arr3[j+1].Rural);
-          if(tot < tot1){
-             let temp=arr3[j];
-             arr3[j]=arr3[j+1];
-             arr3[j+1]=temp;
+    rd.on('close', function() {
+      for(let i = 0; i < countryArray.length; i = i + 1){
+          arr3.push({
+            'Country':countryArray[i],
+            'Urban':urban_Arr[i],
+            'Rural':rural_Arr[i]});
+      }
+      console.log(arr3);
+      console.log(arr3.length);
+      for (let i = 0; i < arr3.length; i = i + 1) {
+          for (let j = 0; j < arr3.length - 1; j = j + 1) {
+            let tot = arr3[j].Urban + arr3[j].Rural;
+            let tot1 = parseInt(arr3[j + 1].Urban, 10) + parseInt(arr3[j + 1].Rural, 10);
+              if(tot < tot1){
+                 let temp = arr3[j];
+                 arr3[j] = arr3[j + 1];
+                 arr3[j + 1] = temp;
+              }
           }
       }
-  }
-  fs.writeFile('../json/population1.json', JSON.stringify(arr1));
-  fs.writeFile('../json/population2.json', JSON.stringify(arr2));
-  fs.writeFile('../json/population3.json', JSON.stringify(arr3));
-    console.log('Done');
-});
-return "Converted successfully";
+      fs.writeFile('../json/population1.json', JSON.stringify(arr1));
+      fs.writeFile('../json/population2.json', JSON.stringify(arr2));
+      fs.writeFile('../json/population3.json', JSON.stringify(arr3));
+        console.log('Done');
+    });
+    return 'Converted successfully';
 }
-
-converter();
+let country = ['India', 'China', 'Pakistan', 'Sri Lanka', 'Bangladesh'];
+let message = converter(2010, 2015, country);
+console.log(message);
+module.exports={
+    
+};
