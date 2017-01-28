@@ -1,10 +1,10 @@
 const fs = require('fs');
 const rl = require('readline');
-function converter(startYear, endYear, countryArray) {
-    if(startYear === NaN || startYear === undefined || startYear === null) {
-        return 'Invalid Year';
+module.exports = function converter(startYear, endYear, countryArray) {
+    if(isNaN(startYear) || startYear === undefined || startYear === null) {
+        throw new Error('Not a number');
     }
-    if(endYear === NaN || endYear === undefined || endYear === null) {
+    if(isNaN(endYear) || endYear === undefined || endYear === null) {
       return 'Invalid Year';
     }
     if(countryArray === null || countryArray === undefined || countryArray.length === 0) {
@@ -76,11 +76,5 @@ function converter(startYear, endYear, countryArray) {
       fs.writeFile('../json/population3.json', JSON.stringify(arr3));
         console.log('Done');
     });
-    return 'Converted successfully';
+    return 'JSON written successfully';
 }
-let country = ['India', 'China', 'Pakistan', 'Sri Lanka', 'Bangladesh'];
-let message = converter(2010, 2015, country);
-console.log(message);
-module.exports={
-    
-};
