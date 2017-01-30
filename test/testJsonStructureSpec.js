@@ -2,8 +2,8 @@ var chai = require('chai');
 var expect = chai.expect;
 var jsonDiff = require('./jsondiff');
 var totalObjectKeys = require('./totalObjectKeys');
-var expectedJSON = require('..json/population1.json');
-var actualJSON = require('../json/population1.json');
+var expectedJSON = require('../../Urbanisation/expectedjson/bar.json');
+var actualJSON = require('../../Urbanisation/json/population3.json');
 describe('Test Application as Blackbox', function(){
   it ('Test JSON is well formed', function(done){
     /*ToDO Parse JSON*/

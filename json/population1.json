@@ -1,1 +1,21 @@
-[{"year":"2010","Rural population (% of total)":"69.07","Urban population (% of total)":"30.93"},{"year":"2011","Rural population (% of total)":"68.724","Urban population (% of total)":"31.276"},{"year":"2012","Rural population (% of total)":"68.369","Urban population (% of total)":"31.631"},{"year":"2013","Rural population (% of total)":"68.006","Urban population (% of total)":"31.994"},{"year":"2014","Rural population (% of total)":"67.634","Urban population (% of total)":"32.366"}]
+[{
+    "year": "2010",
+    "Rural population (% of total)": "69.07",
+    "Urban population (% of total)": "30.93"
+}, {
+    "year": "2011",
+    "Rural population (% of total)": "68.724",
+    "Urban population (% of total)": "31.276"
+}, {
+    "year": "2012",
+    "Rural population (% of total)": "68.369",
+    "Urban population (% of total)": "31.631"
+}, {
+    "year": "2013",
+    "Rural population (% of total)": "68.006",
+    "Urban population (% of total)": "31.994"
+}, {
+    "year": "2014",
+    "Rural population (% of total)": "67.634",
+    "Urban population (% of total)": "32.366"
+}]
