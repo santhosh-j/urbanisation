@@ -13,10 +13,5 @@ describe('A series of test for JSON Object', function(err){
        result.should.be.equal('Converted successfully');
        done();
     });
-  // it('should only accept numerical value', function(done){
-  // 	var result = calculateInterest();
-  //   expect(result).to.be.NaN;
-  //   done();
-  //
-  //   });
+  
   });
