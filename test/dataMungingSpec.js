@@ -4,27 +4,27 @@ sinon = require('sinon'),
 readline = require("readline"),
 fs=require("fs"),
 convert = require("../../Urbanisation/js/convertjson");
-let country = ['India', 'China', 'Bhutan', 'Sri Lanka', 'Bangladesh'];
+let country = ['India', 'China', 'Pakistan', 'Sri Lanka', 'Bangladesh'];
 describe("A series of test for Converting  CSV to JSON",
 	function(err){
 
-  it("should return sucess message", function(done){
+  it("should return sucess message", function(done) {
   	var result = convert(2001, 2005, country);
   	result.should.be.equal('JSON written successfully');
     done();
     });
 
-   it('should fail if year is notprovided', function(done){
+   it('should fail if year is notprovided', function(done) {
         expect(convert).to.throw(Error, "Not a number");
         done();
     });
 
-  it('should fail if year is not a number', function(done){
+  it('should fail if year is not a number', function(done) {
         expect(convert.bind(undefined, {})).to.throw(Error, "Not a number");
         done();
     });
 
-   it('should fail if year is NaN', function(done){
+   it('should fail if year is NaN', function(done) {
         expect(convert.bind(undefined, NaN)).to.throw(Error, "Not a number");
         done();
     });

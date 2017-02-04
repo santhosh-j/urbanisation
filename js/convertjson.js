@@ -15,12 +15,14 @@ module.exports = function converter(startYear, endYear, countryArray) {
         output: process.stdout,
         terminal: false
     });
+    //  Initialise variables
     let arr1 = [];
     let arr2 = [];
     let arr3 = [];
     let rural = 0;
     let rural_Arr = [0, 0, 0, 0, 0];
     let urban_Arr = [0, 0, 0, 0, 0];
+    //  read line by line
     rd.on('line', function(data) {
         let linearr = data.split(',');
         if(linearr[1] === 'IND' && (linearr[4] >= startYear && linearr[4] <= endYear) && linearr[3] === 'SP.RUR.TOTL.ZS')
@@ -50,7 +52,7 @@ module.exports = function converter(startYear, endYear, countryArray) {
           }
         }
     });
-
+    //  execute at end of file
     rd.on('close', function() {
       for(let i = 0; i < countryArray.length; i = i + 1){
           arr3.push({
@@ -58,8 +60,8 @@ module.exports = function converter(startYear, endYear, countryArray) {
             'Urban':urban_Arr[i],
             'Rural':rural_Arr[i]});
       }
-      console.log(arr3);
-      console.log(arr3.length);
+    //  console.log(arr3);
+    //  console.log(arr3.length);
       for (let i = 0; i < arr3.length; i = i + 1) {
           for (let j = 0; j < arr3.length - 1; j = j + 1) {
             let tot = arr3[j].Urban + arr3[j].Rural;
@@ -71,10 +73,11 @@ module.exports = function converter(startYear, endYear, countryArray) {
               }
           }
       }
+      //  write into JSON file
       fs.writeFile('../json/population1.json', JSON.stringify(arr1));
       fs.writeFile('../json/population2.json', JSON.stringify(arr2));
       fs.writeFile('../json/population3.json', JSON.stringify(arr3));
-        console.log('Done');
+      //  console.log('Done');
     });
     return 'JSON written successfully';
 }
